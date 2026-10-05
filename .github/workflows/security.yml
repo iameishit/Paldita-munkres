@@ -1,0 +1,29 @@
+name: Security
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e . bandit pip-audit detect-secrets
+      - name: Static analysis (bandit)
+        run: bandit -q -r src
+      - name: Known-vulnerability audit of the environment
+        run: pip-audit --skip-editable
+      - name: Secrets scan
+        run: |
+          git ls-files | xargs detect-secrets scan > /tmp/secrets.json
+          python -c "import json; d = json.load(open('/tmp/secrets.json')); n = sum(len(v) for v in d['results'].values()); print('findings:', n); raise SystemExit(n)"

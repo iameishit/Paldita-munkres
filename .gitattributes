@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.py text diff=python
+*.md text diff=markdown
+uv.lock linguist-generated=true
+docs/BENCHMARKS.md linguist-generated=true

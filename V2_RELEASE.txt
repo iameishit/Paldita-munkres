@@ -1,0 +1,132 @@
+================================================================================
+  PALDITA MUNKRES  V2          Faster. Smarter. More Robust.
+  Version 2.0.0rc1  -  release notes
+================================================================================
+
+  Badge : assets/logo.png        Banner : assets/banner.jpg
+
+munkres solves the assignment problem (the Hungarian / Kuhn-Munkres algorithm):
+given a cost for every (worker, job) pair, find the one-to-one assignment with
+the lowest total cost. Version 1.1.4 was the last release of the original
+library (September 2020). Version 2 is a ground-up modernisation of it.
+
+--------------------------------------------------------------------------------
+ 1. HIGHLIGHTS
+--------------------------------------------------------------------------------
+  * 5x to 50x faster than 1.1.4 on random matrices (new O(n^2 * m) solver; 200x200 in
+    about 0.1 s); on par when almost all costs tie
+  * Impossible matrices raise UnsolvableMatrix immediately and explain why
+  * Thread-safe, never modifies your input, no runtime dependencies
+  * Fully typed (py.typed, mypy --strict clean), Python 3.10 - 3.14
+  * numpy arrays and pandas DataFrames accepted (both optional)
+  * New high-level API: solve(), gating, maximize, labels, step-by-step traces
+  * Analysis tools: optimality certificates, what-ifs, k-best, bottleneck
+  * Related problems: stable matching, transportation, entropic transport
+  * A command line tool: munkres costs.csv --maximize --json
+  * 100% line and branch test coverage, checked against independent oracles
+
+--------------------------------------------------------------------------------
+ 2. WHAT CHANGED  (things to know when upgrading from 1.x)
+--------------------------------------------------------------------------------
+  * Python 3.10 or newer is required (1.x claimed Python 2 support in its wheel
+    tag although it needed Python 3.5+).
+  * Ragged (non-rectangular) matrices now raise ValueError.
+  * Empty matrices return an empty result.
+  * NaN and -inf costs raise ValueError. +inf now means "forbidden", exactly
+    like DISALLOWED.
+  * Non-numeric cells raise TypeError.
+  * UnsolvableMatrix is now a subclass of ValueError and carries .rows / .cols.
+  * Packaging moved from setup.py / setup.cfg to pyproject.toml; the code lives
+    in src/munkres/.
+  * Munkres().compute(), make_cost_matrix(), print_matrix(), DISALLOWED and
+    UnsolvableMatrix keep working as before; Munkres().compute() is not
+    deprecated.
+
+--------------------------------------------------------------------------------
+ 3. WHAT IMPROVED
+--------------------------------------------------------------------------------
+  Speed
+    * Shortest-augmenting-path Hungarian solver with dual potentials and a
+      warm start (row reduction + greedy matching).
+    * Rectangular matrices are solved directly, with no padding to a square.
+    * See docs/BENCHMARKS.md for measurements (tools/benchmark.py reproduces).
+  Input handling
+    * Accepts lists, tuples, numpy arrays and pandas DataFrames.
+    * Works with int, float, Fraction and Decimal costs; integers of any size.
+    * Clear, specific error messages that name the offending row / cell.
+  API
+    * DISALLOWED survives copy, deepcopy and pickle (works with multiprocessing).
+    * make_cost_matrix() understands DISALLOWED and +inf cells.
+  Quality
+    * Type hints exported to users (py.typed); new type aliases.
+    * Tests: regression tests, property-based tests (Hypothesis) and
+      randomised comparison with SciPy and exhaustive search.
+    * tools/audit.sh runs lint, formatting, spelling, types, security scan,
+      secrets scan, coverage, docs build, packaging checks and a clean-install
+      smoke test in one command.
+  Project
+    * GitHub Actions: tests on Python 3.10-3.14 (Linux, Windows, macOS), CodeQL,
+      dependency review, security scans, docs, benchmarks, nightly runs.
+    * Releases use PyPI trusted publishing (no stored token).
+
+--------------------------------------------------------------------------------
+ 4. WHAT WAS FIXED
+--------------------------------------------------------------------------------
+  * Matrices whose forbidden cells make an assignment impossible no longer
+    wait forever: UnsolvableMatrix is raised at once, naming the rows that
+    compete for too few columns.
+  * NaN, -inf and all-infinite rows no longer hang the solver.
+  * Rectangular and ragged input no longer returns pairs that do not exist in
+    your matrix or silently drops columns.
+  * numpy input is no longer modified in place; rectangular numpy arrays and
+    tuples now work.
+  * Empty input no longer crashes with IndexError.
+  * One Munkres object can now be shared between threads (no hidden state).
+  * Integers larger than sys.maxsize are handled correctly.
+  * make_cost_matrix() no longer fails on matrices containing DISALLOWED.
+  * __all__ now exports UnsolvableMatrix and print_matrix; documentation no
+    longer refers to a method that does not exist.
+  * The wheel is tagged py3 (it was labelled py2.py3), and python_requires is
+    declared.
+
+--------------------------------------------------------------------------------
+ 5. NEW IN V2
+--------------------------------------------------------------------------------
+  solve(matrix, maximize=, max_cost=, min_profit=, trace=)
+        Returns an Assignment: pairs, total, unmatched rows/columns, labels.
+  Gating (max_cost / min_profit)
+        Refuse bad pairs and leave rows unmatched instead (object tracking).
+  diagnose(matrix)
+        Explains why a matrix has no complete assignment (Hall's theorem).
+  linear_sum_assignment(cost_matrix, maximize=False)
+        A drop-in for scipy.optimize.linear_sum_assignment.
+  build_cost_matrix(rows, cols, cost_function)
+        Builds a matrix from two lists and a cost function.
+  Trace  (solve(..., trace=True).trace)
+        Step-by-step record; to_text() and to_html().
+  shadow_prices(matrix)         LP dual variables: a checkable optimality proof.
+  counterfactual(m, row, col)   What would forcing this pair cost?
+  tolerance(m, row, col)        How far can this pair's cost rise before the
+                                answer changes?
+  k_best(matrix, k)             The k best assignments (Murty's algorithm).
+  bottleneck(matrix)            Make the worst single pair as good as possible.
+  stable_matching(...)          Gale-Shapley stable matching from preferences.
+  transport(supply, demand, c)  The transportation problem.
+  sinkhorn / soft_assignment    Entropic optimal transport, soft matchings.
+  munkres (command)             munkres costs.csv --maximize --json --trace
+  python -m munkres             Built-in self-check.
+
+--------------------------------------------------------------------------------
+ 6. UPGRADING
+--------------------------------------------------------------------------------
+    pip install --upgrade munkres        (once published)
+    pip install munkres==2.0.0rc1        (pre-release)
+  Code that only called Munkres().compute() on rectangular, finite matrices
+  needs no changes. See docs/migration.md for the details.
+
+--------------------------------------------------------------------------------
+ 7. CREDITS AND LICENSE
+--------------------------------------------------------------------------------
+  Created by Brian M. Clapper (2008-2020). Version 2 by Eishit Nigam.
+  Apache License 2.0. See LICENSE.md, NOTICE and AUTHORS.md.
+================================================================================

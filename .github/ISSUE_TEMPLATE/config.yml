@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability (private)
+    url: https://github.com/iameishit/Paldita-munkres/security/advisories/new
+    about: Please do not open public issues for vulnerabilities.
+  - name: Questions and usage help
+    url: https://github.com/iameishit/Paldita-munkres/blob/main/SUPPORT.md
+    about: Read the support guide first.

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "munkres"
+type: software
+abstract: >-
+  The Munkres (Hungarian) algorithm for the assignment problem in pure Python,
+  with forbidden pairings, rectangular matrices, exact Decimal/Fraction
+  arithmetic, optimality certificates and related matching tools.
+authors:
+  - family-names: Clapper
+    given-names: "Brian M."
+  - family-names: Nigam
+    given-names: Eishit
+    alias: iameishit
+version: 2.0.0rc1
+license: Apache-2.0
+repository-code: "https://github.com/iameishit/Paldita-munkres"
+url: "https://github.com/iameishit/Paldita-munkres#readme"
+keywords:
+  - assignment problem
+  - hungarian algorithm
+  - munkres
+  - linear sum assignment
+  - bipartite matching

@@ -1,0 +1,12 @@
+include LICENSE.md NOTICE README.md CHANGELOG.md ROADMAP.md V2_RELEASE.txt
+include SECURITY.md CONTRIBUTING.md SUPPORT.md GOVERNANCE.md AUTHORS.md MAINTAINERS.md
+include CODE_OF_CONDUCT.md CITATION.cff PUBLISHING.md AGENTS.md
+include LICENSES/*.md
+recursive-include docs *.md
+recursive-include security *.md
+recursive-include release *.md
+recursive-include examples *.py
+recursive-include benchmarks *.py
+recursive-include tests *.py *.md *.csv
+recursive-include tools *.py *.sh
+prune src/munkres.egg-info
