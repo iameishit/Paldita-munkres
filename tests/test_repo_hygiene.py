@@ -117,11 +117,38 @@ def test_readme_python_examples_run_and_print_what_the_comments_claim(capsys):
 
 
 def test_version_is_single_sourced_and_in_changelog():
-    assert re.fullmatch(r"\d+\.\d+\.\d+((a|b|rc)\d+|\.dev\d+)?", munkres.__version__)
+    assert munkres.__version__ == "2.0.0"
     assert pyproject()["tool"]["setuptools"]["dynamic"]["version"] == {
         "attr": "munkres.__version__"
     }
     assert f"Version {munkres.__version__}" in read("CHANGELOG.md")
+
+
+def test_stable_release_material_and_publishing_workflow():
+    project = pyproject()["project"]
+    assert "Development Status :: 5 - Production/Stable" in project["classifiers"]
+    assert "![Release](https://img.shields.io/badge/release-v2.0.0-" in read("README.md")
+    assert "pip install munkres==2.0.0" in read("docs/installation.md")
+
+    for name in (
+        "README.md",
+        "CHANGELOG.md",
+        "V2_RELEASE.txt",
+        "docs/installation.md",
+        "release/RELEASE_NOTES.md",
+    ):
+        assert not re.search(r"2\.0\.0(?:a\d+|b\d+|rc\d+|\.dev\d+)", read(name)), name
+
+    workflow = read(".github/workflows/release.yml")
+    assert '      - "v*"' in workflow
+    assert 'python tools/verify_release.py --tag "$GITHUB_REF_NAME"' in workflow
+    assert "python -m twine check dist/*" in workflow
+    assert "name: pypi" in workflow
+    assert "id-token: write" in workflow
+    assert "https://pypi.org/project/munkres/" in workflow
+    assert "TestPyPI" not in workflow
+    assert "password:" not in workflow.lower()
+    assert "pypi-token:" not in workflow.lower()
 
 
 def test_security_and_contributing_docs_present():

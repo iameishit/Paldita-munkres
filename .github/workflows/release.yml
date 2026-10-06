@@ -27,9 +27,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install build twine check-wheel-contents
 
+      - name: Verify stable release tag
+        run: python tools/verify_release.py --tag "$GITHUB_REF_NAME"
+
       - name: Build distributions
         run: |
-          python -m build
+          rm -rf dist
+          python -m build --outdir dist
 
       - name: Check package metadata
         run: |

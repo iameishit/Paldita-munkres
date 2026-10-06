@@ -13,7 +13,7 @@
 ![Python](https://img.shields.io/badge/python-3.10%20%E2%80%93%203.14-3776AB)
 ![Dependencies](https://img.shields.io/badge/runtime%20dependencies-0-brightgreen)
 ![Typed](https://img.shields.io/badge/typing-strict-informational)
-![Release](https://img.shields.io/badge/release-v2.0.0rc1-2f6fed)
+![Release](https://img.shields.io/badge/release-v2.0.0-2f6fed)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
 The **Munkres (Hungarian) algorithm** for the *assignment problem*: given a cost
@@ -30,7 +30,7 @@ Worker 2      3      2      2
 ## Install
 
 ```bash
-pip install munkres        # once 2.0 is on PyPI; until then:
+pip install munkres==2.0.0
 pip install git+https://github.com/iameishit/Paldita-munkres
 ```
 

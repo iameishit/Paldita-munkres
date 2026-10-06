@@ -1,8 +1,8 @@
 # Installation
 
 ```bash
-pip install munkres            # once 2.0 is on PyPI
-pip install munkres==2.0.0rc1 # the release candidate
+pip install munkres
+pip install munkres==2.0.0
 pip install git+https://github.com/iameishit/Paldita-munkres   # straight from GitHub
 ```
 

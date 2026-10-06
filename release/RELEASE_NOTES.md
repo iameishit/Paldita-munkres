@@ -1,4 +1,4 @@
-# Release notes: 2.0.0rc1
+# Release notes: munkres 2.0.0 (stable)
 
 Faster, typed, thread-safe, and impossible matrices now raise a clear error immediately. The full notes are in
 [V2_RELEASE.txt](../V2_RELEASE.txt); the complete list of changes is in [CHANGELOG.md](../CHANGELOG.md).

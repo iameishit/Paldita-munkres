@@ -1,6 +1,6 @@
 # Change Log, munkres.py
 
-Version 2.0.0rc1 (release candidate)
+Version 2.0.0 (stable release)
 
 A ground-up modernisation. See also `V2_RELEASE.txt`. Modified from munkres 1.1.4 by
 Brian M. Clapper (Apache License 2.0); the changes below were made by Eishit Nigam.

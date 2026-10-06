@@ -7,29 +7,31 @@ using **PyPI trusted publishing**, so no API token is stored anywhere.
 
 1. PyPI -> project `munkres` -> *Publishing* -> add a trusted publisher:
    owner `iameishit`, repository `Paldita-munkres`, workflow `release.yml`,
-   environment `pypi`. Do the same on TestPyPI with environment `testpypi`.
-2. GitHub -> repository *Settings -> Environments*: create `pypi` and
-   `testpypi` (add a required reviewer to `pypi` for a manual approval gate).
+   environment `pypi`.
+2. GitHub -> repository *Settings -> Environments*: create `pypi` (add a
+   required reviewer for a manual approval gate).
 3. Turn on 2FA for every PyPI owner.
 
-## Cutting a release
+## Stable release
 
 ```bash
-tools/audit.sh                      # everything must PASS
-# bump __version__ in src/munkres/__init__.py, update CHANGELOG.md, commit
-git tag v2.0.0rc1 && git push --tags      # tags containing "rc"/"dev" go to TestPyPI
+tools/audit.sh
+python tools/verify_package.py
+python tools/verify_release.py --tag v2.0.0
 ```
 
-Pre-release tags (`rc`, `a`, `b`, `dev`) publish to TestPyPI; plain `vX.Y.Z`
-tags publish to PyPI. Verify a TestPyPI release with
-`pip install -i https://test.pypi.org/simple/ munkres==2.0.0rc1` first.
+The release workflow runs for `v*` tags, verifies that the tag is a stable
+`vX.Y.Z` matching the package version, builds clean distributions, checks them
+with Twine and publishes to the real PyPI using Trusted Publishing/OIDC and the
+`pypi` environment. Pre-release tags are rejected by this workflow; publishing
+pre-releases requires a separately configured workflow.
 
-`pyproject.toml` (the import name stays `munkres`).
+Project metadata is in `pyproject.toml`; the import name stays `munkres`.
 
-## Pointing 1.x users at 2.x
+## Supporting 1.x users
 
-Before the first 2.x release, a final `1.1.5` whose only change is a notice helps people
-who cannot upgrade immediately. Suggested wording for its README / PyPI description:
+If a final 1.x maintenance release is needed, a notice can help users who cannot
+upgrade immediately. Suggested wording for its README / PyPI description:
 
 > munkres 1.x is end-of-life. 2.0 fixes hangs on impossible or NaN input, adds typing,
 > numpy/pandas input and many new features, and requires Python 3.10+. Pin `munkres<2`

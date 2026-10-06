@@ -4,7 +4,7 @@ Check that the repository is consistent and release-ready: required files, match
 working links and images, valid configuration files, and public files free of internal notes.
 
     python tools/verify_release.py          # exit status 0 means no problems
-    python tools/verify_release.py --tag v2.0.0rc1   # also check a tag name against the version
+    python tools/verify_release.py --tag v2.0.0      # also check a stable tag against the version
 """
 
 import argparse
@@ -202,8 +202,11 @@ def check_versions(tag):
         fail("V2_RELEASE.txt does not mention the current version")
     if version not in (ROOT / "release/RELEASE_NOTES.md").read_text():
         fail("release/RELEASE_NOTES.md does not mention the current version")
-    if tag and tag != f"v{version}":
-        fail(f"tag {tag} does not match version v{version}")
+    if tag:
+        if not re.fullmatch(r"v\d+\.\d+\.\d+", tag):
+            fail(f"tag {tag} is not a stable vX.Y.Z release tag")
+        elif tag != f"v{version}":
+            fail(f"tag {tag} does not match version v{version}")
 
 
 def check_links():

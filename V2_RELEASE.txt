@@ -1,6 +1,6 @@
 ================================================================================
   PALDITA MUNKRES  V2          Faster. Smarter. More Robust.
-  Version 2.0.0rc1  -  release notes
+  Version 2.0.0  -  stable release notes
 ================================================================================
 
   Badge : assets/logo.png        Banner : assets/banner.jpg
@@ -120,7 +120,7 @@ library (September 2020). Version 2 is a ground-up modernisation of it.
  6. UPGRADING
 --------------------------------------------------------------------------------
     pip install --upgrade munkres        (once published)
-    pip install munkres==2.0.0rc1        (pre-release)
+    pip install munkres==2.0.0           (stable release)
   Code that only called Munkres().compute() on rectangular, finite matrices
   needs no changes. See docs/migration.md for the details.
 
