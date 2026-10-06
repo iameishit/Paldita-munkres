@@ -12,7 +12,7 @@ authors:
   - family-names: Nigam
     given-names: Eishit
     alias: iameishit
-version: 2.0.0rc1
+version: 2.0.0
 license: Apache-2.0
 repository-code: "https://github.com/iameishit/Paldita-munkres"
 url: "https://github.com/iameishit/Paldita-munkres#readme"
