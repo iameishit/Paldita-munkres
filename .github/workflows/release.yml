@@ -1,4 +1,4 @@
-name: Publish munkres to Pypi.org 
+name: Publish munkres to PyPI
 
 on:
   push:
