@@ -1,50 +1,68 @@
-name: Release
+name: Publish munkres to PyPI
+
 on:
   push:
-    tags: ["v*"]
+    tags:
+      - "v*"
 
 permissions:
   contents: read
 
 jobs:
   build:
+    name: Build package
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install build twine check-wheel-contents
-      - run: python -m build
-      - run: python -m twine check dist/*
-      - run: check-wheel-contents dist/*.whl
-      - uses: actions/upload-artifact@v4
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine check-wheel-contents
+
+      - name: Build distributions
+        run: |
+          python -m build
+
+      - name: Check package metadata
+        run: |
+          python -m twine check dist/*
+
+      - name: Check wheel
+        run: |
+          check-wheel-contents dist/*.whl
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: munkres-distributions
           path: dist/
 
-  testpypi:
-    if: contains(github.ref_name, 'rc') || contains(github.ref_name, 'dev') || contains(github.ref_name, 'a') || contains(github.ref_name, 'b')
+  publish:
+    name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    environment: testpypi
-    permissions:
-      id-token: write          # PyPI trusted publishing (OIDC) - no stored token
-    steps:
-      - uses: actions/download-artifact@v4
-        with: { name: dist, path: dist/ }
-      - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
 
-  pypi:
-    if: ${{ !(contains(github.ref_name, 'rc') || contains(github.ref_name, 'dev') || contains(github.ref_name, 'a') || contains(github.ref_name, 'b')) }}
-    needs: build
-    runs-on: ubuntu-latest
-    environment: pypi
+    environment:
+      name: pypi
+      url: https://pypi.org/project/munkres/
+
     permissions:
       id-token: write
+
     steps:
-      - uses: actions/download-artifact@v4
-        with: { name: dist, path: dist/ }
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: munkres-distributions
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
