@@ -96,7 +96,7 @@ __all__ = [
     "transport",
 ]
 
-__version__ = "2.0.0rc1"
+__version__ = "2.0.0"
 __author__ = "Brian Clapper, bmc@clapper.org"
 __maintainer__ = "Eishit Nigam"
 __url__ = "https://github.com/iameishit/Paldita-munkres"
