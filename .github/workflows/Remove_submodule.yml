@@ -24,3 +24,4 @@ jobs:
           git add .gitmodules
           git commit -m "chore: remove Paldita-munkres-3.0.0 submodule"
           git push
+          || true
