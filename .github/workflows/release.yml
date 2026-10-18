@@ -142,9 +142,9 @@ jobs:
           name: munkres-distributions
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
-with: 
-      user: _token_
-      password: ${{secrets.PYPI_API_TOKEN}}
+        with: 
+           user: __token__
+           password: ${{ secrets.PYPI_API_TOKEN }}
 
   github-release:
     name: GitHub release
