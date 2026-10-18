@@ -1,7 +1,7 @@
 # Release pipeline for munkres.
 #
-# Stable vX.Y.Z tags build and validate distributions, publish to PyPI,
-# then create a GitHub release. Manual runs publish to TestPyPI only.
+# Manual runs and stable vX.Y.Z / VX.Y.Z tags publish directly to PyPI.
+# Stable tag pushes also create a GitHub release after successful publishing.
 # Non-stable tags are rejected before package builds begin.
 
 name: Release
@@ -124,31 +124,9 @@ jobs:
           path: dist/
           if-no-files-found: error
 
-  testpypi:
-    name: Publish rehearsal to TestPyPI
-    if: github.event_name == 'workflow_dispatch'
-    needs: check
-    runs-on: ubuntu-latest
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/project/munkres/
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: munkres-distributions
-          path: dist/
-
-      - name: Publish to TestPyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: dist/
-
   pypi:
-    name: Publish to PyPI
-    if: github.event_name == 'push'
+    name: Publish directly to PyPI
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     needs: check
     runs-on: ubuntu-latest
     environment:
