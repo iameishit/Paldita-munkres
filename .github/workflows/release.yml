@@ -106,7 +106,7 @@ jobs:
     needs: [sdist, wheels]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: dist-*
           merge-multiple: true
@@ -135,7 +135,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: munkres-distributions
           path: dist/
@@ -157,7 +157,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: munkres-distributions
           path: dist/
