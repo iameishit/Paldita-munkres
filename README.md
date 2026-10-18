@@ -5,7 +5,7 @@
 <img src="https://raw.githubusercontent.com/iameishit/Paldita-munkres/main/assets/logo.png" alt="Paldita Munkres V3 badge" width="120" align="left">
 
 
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE.md)
+[![License](https://img.shields.io/badge/license-Mit-blue)](LICENSE.md)
 ![Python](https://img.shields.io/badge/python-3.10%20%E2%80%93%203.14-3776AB)
 ![Dependencies](https://img.shields.io/badge/runtime%20dependencies-0-brightgreen)
 ![Typed](https://img.shields.io/badge/typing-strict-informational)
