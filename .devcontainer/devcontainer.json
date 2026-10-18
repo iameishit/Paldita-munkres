@@ -1,0 +1,16 @@
+{
+  "name": "munkres",
+  "build": { "dockerfile": "Dockerfile", "context": ".." },
+  "postCreateCommand": "uv sync && pre-commit install",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "charliermarsh.ruff", "ms-python.mypy-type-checker"],
+      "settings": {
+        "python.defaultInterpreterPath": ".venv/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["tests"],
+        "[python]": { "editor.defaultFormatter": "charliermarsh.ruff" }
+      }
+    }
+  }
+}

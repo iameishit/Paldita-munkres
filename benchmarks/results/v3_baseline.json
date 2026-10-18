@@ -1,0 +1,184 @@
+{
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 1,
+    "native_kernel": "c-kernel-abi1",
+    "munkres": "2.0.0",
+    "seed": 12345,
+    "quick": true
+  },
+  "dense": [
+    {
+      "case": "random float 5x5",
+      "paldita_best_us": 3.88,
+      "scipy_best_us": 0.79,
+      "ratio_paldita_over_scipy": 4.899,
+      "paldita_p50_us": 3.95,
+      "scipy_p50_us": 0.81,
+      "paldita_p95_us": 4.38,
+      "scipy_p95_us": 0.81,
+      "problem_hash": "8c48d55188346ae1c5d813343a5ffe041de414e927063ad8e6ebd5cbca06553e",
+      "objective_agrees_with_scipy": true,
+      "certificate_verified": true
+    },
+    {
+      "case": "random float 10x10",
+      "paldita_best_us": 4.7,
+      "scipy_best_us": 1.54,
+      "ratio_paldita_over_scipy": 3.042,
+      "paldita_p50_us": 4.74,
+      "scipy_p50_us": 1.56,
+      "paldita_p95_us": 4.9,
+      "scipy_p95_us": 1.59,
+      "problem_hash": "71cf9a1e06f9ada5a11eaf551b21488b9d778c768a6f4a191632bf5430c378f9",
+      "objective_agrees_with_scipy": true,
+      "certificate_verified": true
+    },
+    {
+      "case": "random float 32x32",
+      "paldita_best_us": 14.95,
+      "scipy_best_us": 10.97,
+      "ratio_paldita_over_scipy": 1.363,
+      "paldita_p50_us": 15.56,
+      "scipy_p50_us": 11.32,
+      "paldita_p95_us": 16.54,
+      "scipy_p95_us": 12.39,
+      "problem_hash": "98676ce5a679953b38368f9d178e29681d6995c38fe7ffc19a9447bff8e124c9",
+      "objective_agrees_with_scipy": true,
+      "certificate_verified": true
+    },
+    {
+      "case": "random float 64x64",
+      "paldita_best_us": 67.96,
+      "scipy_best_us": 82.44,
+      "ratio_paldita_over_scipy": 0.824,
+      "paldita_p50_us": 70.13,
+      "scipy_p50_us": 85.63,
+      "paldita_p95_us": 72.84,
+      "scipy_p95_us": 93.91
+    },
+    {
+      "case": "random float 128x128",
+      "paldita_best_us": 430.65,
+      "scipy_best_us": 444.56,
+      "ratio_paldita_over_scipy": 0.969,
+      "paldita_p50_us": 451.11,
+      "scipy_p50_us": 463.92,
+      "paldita_p95_us": 516.87,
+      "scipy_p95_us": 563.3
+    },
+    {
+      "case": "random float 256x256",
+      "paldita_best_us": 2634.97,
+      "scipy_best_us": 2677.17,
+      "ratio_paldita_over_scipy": 0.984,
+      "paldita_p50_us": 2710.66,
+      "scipy_p50_us": 2793.61,
+      "paldita_p95_us": 3120.56,
+      "scipy_p95_us": 3377.12
+    },
+    {
+      "case": "random float 512x512",
+      "paldita_best_us": 12163.71,
+      "scipy_best_us": 11493.27,
+      "ratio_paldita_over_scipy": 1.058,
+      "paldita_p50_us": 14854.98,
+      "scipy_p50_us": 12709.23,
+      "paldita_p95_us": 17000.79,
+      "scipy_p95_us": 15979.85
+    },
+    {
+      "case": "small-integer int64 64x64 (ties)",
+      "paldita_best_us": 38.88,
+      "scipy_best_us": 56.36,
+      "ratio_paldita_over_scipy": 0.69,
+      "paldita_p50_us": 42.71,
+      "scipy_p50_us": 60.7,
+      "paldita_p95_us": 59.46,
+      "scipy_p95_us": 69.11
+    },
+    {
+      "case": "rectangular float 64x128",
+      "paldita_best_us": 36.44,
+      "scipy_best_us": 52.2,
+      "ratio_paldita_over_scipy": 0.698,
+      "paldita_p50_us": 39.06,
+      "scipy_p50_us": 53.1,
+      "paldita_p95_us": 39.76,
+      "scipy_p95_us": 53.78
+    },
+    {
+      "case": "90% forbidden float 64x64",
+      "paldita_best_us": 46.89,
+      "scipy_best_us": 61.22,
+      "ratio_paldita_over_scipy": 0.766,
+      "paldita_p50_us": 50.8,
+      "scipy_p50_us": 62.47,
+      "paldita_p95_us": 59.22,
+      "scipy_p95_us": 66.04
+    },
+    {
+      "case": "small-integer int64 256x256 (ties)",
+      "paldita_best_us": 1548.43,
+      "scipy_best_us": 1971.11,
+      "ratio_paldita_over_scipy": 0.786,
+      "paldita_p50_us": 1591.42,
+      "scipy_p50_us": 2013.36,
+      "paldita_p95_us": 1603.39,
+      "scipy_p95_us": 2352.88
+    },
+    {
+      "case": "rectangular float 256x512",
+      "paldita_best_us": 866.33,
+      "scipy_best_us": 1115.15,
+      "ratio_paldita_over_scipy": 0.777,
+      "paldita_p50_us": 890.03,
+      "scipy_p50_us": 1125.62,
+      "paldita_p95_us": 941.13,
+      "scipy_p95_us": 1152.87
+    },
+    {
+      "case": "90% forbidden float 256x256",
+      "paldita_best_us": 3168.9,
+      "scipy_best_us": 2022.65,
+      "ratio_paldita_over_scipy": 1.567,
+      "paldita_p50_us": 3345.36,
+      "scipy_p50_us": 2058.96,
+      "paldita_p95_us": 4251.6,
+      "scipy_p95_us": 2090.7
+    }
+  ],
+  "batch": [
+    {
+      "case": "batch 5000 x 8x8 (per batch)",
+      "paldita_best_us": 7222.53,
+      "scipy_best_us": 12939.17,
+      "ratio_paldita_over_scipy": 0.558,
+      "paldita_p50_us": 7286.6,
+      "scipy_p50_us": 13569.31,
+      "paldita_p95_us": 7520.59,
+      "scipy_p95_us": 14399.46,
+      "paldita_solves_per_s": 692278,
+      "scipy_loop_solves_per_s": 386424
+    }
+  ],
+  "dynamic": [
+    {
+      "case": "exact AssignmentState, 1 changed cell per step, 40x40",
+      "full_exact_solve_ms": 15.83,
+      "repair_median_ms": 1.55,
+      "repair_p95_ms": 1.802,
+      "rows_reaugmented_mean": 0,
+      "rows_total": 40,
+      "always_matches_fresh_solve": true
+    }
+  ],
+  "notes": [
+    "single shared-core sandbox: absolute numbers are noisy; compare ratios, trust only large gaps",
+    "both libraries timed from an in-memory float64 ndarray to (row_ind, col_ind)"
+  ]
+}

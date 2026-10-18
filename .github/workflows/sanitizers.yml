@@ -1,0 +1,46 @@
+name: Sanitizers
+# AddressSanitizer + UndefinedBehaviorSanitizer over the C kernel: differential fuzzing against the exact
+# Python solver plus hostile-buffer inputs (wrong item size, misaligned, truncated, absurd sizes).
+on:
+  push:
+    branches: [main, master]
+    paths: ["src/munkres/_native/**", "tools/fuzz_native.py", "tools/sanitize_native.sh", ".github/workflows/sanitizers.yml"]
+  pull_request:
+    paths: ["src/munkres/_native/**", "tools/fuzz_native.py", "tools/sanitize_native.sh", ".github/workflows/sanitizers.yml"]
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  asan-ubsan:
+    name: ASan + UBSan (gcc)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy
+      - name: build with sanitizers and fuzz
+        run: sh tools/sanitize_native.sh 30000 ${{ github.run_number }}
+
+  clang-ubsan:
+    name: UBSan (clang, strict warnings)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: compile with clang, warnings as errors
+        run: |
+          INC="$(python -c 'import sysconfig;print(sysconfig.get_paths()["include"])')"
+          clang -std=c99 -O2 -Wall -Wextra -Wpedantic -Werror -fsanitize=undefined -fno-sanitize-recover=undefined \
+            -shared -fPIC -I"$INC" src/munkres/_native/lapmodule.c -o /tmp/_lapc_check.so

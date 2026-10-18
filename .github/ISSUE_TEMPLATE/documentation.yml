@@ -1,0 +1,17 @@
+name: Documentation
+description: Something in the docs is missing, unclear or wrong
+labels: [documentation]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Where?
+      description: Page, file or section.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What should change?
+    validations:
+      required: true

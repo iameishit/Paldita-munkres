@@ -1,0 +1,26 @@
+/apidocs
+*.pyc
+MANIFEST
+dist
+html
+build
+*.egg-info
+/.idea
+*.iml
+__pycache__
+.pytest_cache
+.hypothesis
+.coverage
+.coverage.*
+htmlcov
+.mypy_cache
+.ruff_cache
+*.egg-info
+.venv
+apidocs
+site
+
+# native build products
+src/munkres/_lapc*.so
+src/munkres/_lapc*.pyd
+build/

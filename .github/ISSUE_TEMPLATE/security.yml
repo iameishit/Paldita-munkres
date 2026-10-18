@@ -1,0 +1,15 @@
+name: Security hardening idea
+description: A non-sensitive suggestion to make the project safer
+labels: [security]
+body:
+  - type: markdown
+    id: note
+    attributes:
+      label: 
+      value: "**Do not report vulnerabilities here.** Use the private reporting link on the issue chooser or see SECURITY.md. This form is for general hardening ideas only."
+  - type: textarea
+    id: idea
+    attributes:
+      label: Suggestion
+    validations:
+      required: true

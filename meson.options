@@ -1,0 +1,2 @@
+# Build the optional native kernel (auto: if a C compiler is found).
+option('native', type: 'feature', value: 'auto', description: 'Build the C extension munkres._lapc')

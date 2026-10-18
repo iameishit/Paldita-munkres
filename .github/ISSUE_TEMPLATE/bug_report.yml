@@ -1,0 +1,33 @@
+name: Bug report
+description: Something returns a wrong answer, crashes or hangs
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: The smallest matrix and call that shows it.
+      render: python
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: munkres version
+      placeholder: 2.0.0
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version and OS
+      placeholder: 3.12 on Linux
+    validations:
+      required: true

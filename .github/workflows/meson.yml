@@ -1,0 +1,33 @@
+name: meson
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  meson:
+    name: meson ${{ matrix.os }} py${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install meson-python meson ninja build pytest numpy scipy
+      - name: build a wheel with meson-python
+        shell: bash
+        run: sh tools/build_meson.sh dist-meson
+      - name: install and test the meson wheel
+        shell: bash
+        run: |
+          python -m pip install dist-meson/*.whl
+          python -c "import munkres, sys; from munkres import _native; print(munkres.__version__, 'native:', _native.available())"
+          python -m pytest tests/v3 -q -p no:cacheprovider --import-mode=importlib -k "not packaging"

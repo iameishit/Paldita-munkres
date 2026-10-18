@@ -1,0 +1,107 @@
+================================================================================
+  PALDITA MUNKRES  V3          Faster. Smarter. More Robust.
+  Version 3.0.0  -  stable release notes
+================================================================================
+
+  Badge : assets/logo.png        Banner : assets/banner.jpg
+
+munkres solves the assignment problem (the Hungarian / Kuhn-Munkres algorithm):
+given a cost for every (worker, job) pair, find the one-to-one assignment with
+the lowest total cost. Version 3.0.0 is the first stable release of the 3.x
+series. It builds on 2.0.0 and keeps its public API.
+
+--------------------------------------------------------------------------------
+ 1. HIGHLIGHTS
+--------------------------------------------------------------------------------
+  * Optional native C kernel (munkres._lapc) with automatic pure-Python fallback
+  * Exact, checkable results: certificates and an independent verifier
+  * Planner that explains which algorithm it chose and why
+  * Dynamic updates: repair an existing optimum after cost changes
+  * Structure tools: Monge witnesses, components, topology of optimal solutions,
+    sensitivity, Gibbs sampling, risk measures, popular and rank-maximal matchings
+  * Command line: doctor, inspect, certify, verify, and the assignment solver
+  * Zero runtime dependencies; numpy and pandas are used only if you pass them
+  * Fully typed (py.typed, mypy --strict clean); Python 3.10 - 3.14
+
+--------------------------------------------------------------------------------
+ 2. MEASURED PERFORMANCE
+--------------------------------------------------------------------------------
+  Compared with SciPy's linear_sum_assignment on the same NumPy input (random
+  integer matrices, median of repeated runs, shared machine):
+
+      size        SciPy       munkres 3.0    ratio (munkres / SciPy)
+      50 x 50     0.049 ms    0.044 ms       0.89
+      200 x 200   1.415 ms    1.394 ms       0.98
+      500 x 500   12.14 ms    9.164 ms       0.75
+      1000 x 1000 36.44 ms    37.81 ms       1.04
+
+  Both return an optimum of the same total cost. munkres 3.0 is competitive with
+  SciPy on NumPy input in this range, not uniformly faster. Timings depend on the
+  machine; reproduce them with tools/benchmark.py. Details: docs/BENCHMARKS.md.
+
+--------------------------------------------------------------------------------
+ 3. WHAT CHANGED SINCE 2.0.0
+--------------------------------------------------------------------------------
+  Fixes
+    * Float costs near the float range no longer raise a false UnsolvableMatrix:
+      the solver switches to exact arithmetic.
+    * Long-double input is no longer rounded to float64 on the NumPy path.
+    * solve_batch never narrows dtypes; maximize=True in its fallback now solves
+      the correct objective; failed problems return -1 rows.
+    * Gibbs sampling runs in log space (no false "unsolvable" from underflow) and
+      validates beta.
+    * regret_of validates complete assignments and low <= high.
+    * Fingerprinting, planning, hashing and structure helpers handle huge integers,
+      Fractions and Decimal('Infinity') consistently.
+    * AssignmentState updates are transactional; update_costs is all-or-nothing;
+      removing an unknown column raises KeyError; snapshot and restore keep the
+      operation log.
+    * make_cost_matrix accepts Decimal('Infinity').
+    * Malformed input to Certificate.from_json and solve_spec raises ValueError only.
+
+  Changes
+    * Native kernel ABI 2: allocation-free core, one workspace per batch, strict
+      buffer validation, and an ndarray entry point with about 2.3x lower per-call
+      overhead on tiny matrices.
+
+  Added
+    * Production safety layer: load-time kernel self-test, per-call fallback to the
+      exact Python solver, circuit breaker, native_status(), reset_native(),
+      set_strict_mode(), and PALDITA_STRICT. See docs/production.md.
+    * min_weight_full_bipartite_matching, with the SciPy sparse-matching signature.
+    * Meson build alongside setuptools (optional native extension).
+    * Exact certificates and an independent verifier: certify, verify_pairs,
+      problem_hash.
+    * Structure and analysis: fingerprint, Monge witnesses, plan / solve_planned,
+      components, topology, edge_margins, enumerate_optima, canonical_optimum,
+      exchange_cycles, reduce_costs, dulmage_mendelsohn, gibbs, count_matchings.
+    * Sensitivity and landscape tools, parametric_assignment, market_equilibrium,
+      solve_with_bound, prune_edges_by_bound, qap_lower_bound, CertificateCache.
+    * Determinant-based matching, popular_matching, energy landscape and barriers,
+      cvar_assignment, solve_3d, solve_lazy and solve_points (exact, no dense matrix).
+    * AssignmentState (dynamic repair), assign_with_inertia, TemporalAssignment,
+      rank_maximal.
+
+--------------------------------------------------------------------------------
+ 4. COMPATIBILITY
+--------------------------------------------------------------------------------
+  * Munkres().compute(), solve(), linear_sum_assignment(), make_cost_matrix(),
+    DISALLOWED and UnsolvableMatrix keep their 2.0.0 behaviour.
+  * Python 3.10 or newer. Wheels include the native kernel for the platforms built
+    in CI; other platforms install from the source distribution and run in pure
+    Python.
+
+--------------------------------------------------------------------------------
+ 5. UPGRADING
+--------------------------------------------------------------------------------
+    pip install --upgrade munkres
+    pip install munkres==3.0.0
+
+  Code written for 2.0.0 needs no changes. See docs/migration.md.
+
+--------------------------------------------------------------------------------
+ 6. CREDITS AND LICENSE
+--------------------------------------------------------------------------------
+  Created by Brian M. Clapper (2008-2020). Version 2 and 3 by Eishit Nigam.
+  Apache License 2.0. See LICENSE.md, NOTICE and AUTHORS.md.
+================================================================================
