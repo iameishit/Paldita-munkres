@@ -1,0 +1,26 @@
+name: Remove Submodule
+on: [workflow_dispatch]
+jobs:
+  remove-submodule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          submodules: recursive
+
+      - name: Remove submodule
+        run: |
+          git rm -f Paldita-munkres-3.0.0
+          rm -rf .git/modules/Paldita-munkres-3.0.0
+          git config --remove-section submodule.Paldita-munkres-3.0.0 || true
+          git status
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .gitmodules
+          git commit -m "chore: remove Paldita-munkres-3.0.0 submodule"
+          git push
