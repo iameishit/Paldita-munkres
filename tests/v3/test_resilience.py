@@ -100,14 +100,14 @@ def test_without_lsa():
 
 def test_each_failing_call_site_is_logged_exactly_once_and_nothing_is_raised():
     a = _matrix(2)
-    with _Fault(_Boom()) as f:
+    with _Fault(_Boom(without_lsa=True)) as f:
         for _ in range(
             2
         ):  # one call reaches two native sites: the quick path, then the general kernel path
             linear_sum_assignment(a)
         warnings = [m for m in f.log.messages if "falling back" in m]
         assert len(warnings) == len(set(warnings)) >= 1, "a call site must not be logged twice"
-        assert any("'lsa'" in m for m in warnings)
+        assert any("'solve_array'" in m for m in warnings)
         assert _native.native_status()["failures"] >= 2
 
 
