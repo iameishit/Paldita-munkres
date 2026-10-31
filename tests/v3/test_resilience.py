@@ -29,9 +29,12 @@ class _Records(logging.Handler):
 class _Boom:
     """A kernel that answers the ABI question and then fails on every real call."""
 
-    def __init__(self, exc=RuntimeError("injected fault")):
+    def __init__(self, exc=RuntimeError("injected fault"), without_lsa=False):
         self.exc = exc
         self.calls = 0
+        self.lsa = None
+        if not without_lsa:
+            self.lsa = self._fail
 
     def abi_version(self):
         return _native._ABI
@@ -40,7 +43,7 @@ class _Boom:
         self.calls += 1
         raise self.exc
 
-    solve = solve_batch = lsa = _fail
+    solve = solve_batch = _fail
 
 
 class _Fault:
@@ -89,16 +92,22 @@ def test_results_are_identical_when_the_kernel_raises_on_every_call():
             )
 
 
+def test_without_lsa():
+    a = _matrix()
+    with _Fault(_Boom(without_lsa=True)):
+        linear_sum_assignment(a)
+
+
 def test_each_failing_call_site_is_logged_exactly_once_and_nothing_is_raised():
     a = _matrix(2)
-    with _Fault(_Boom()) as f:
+    with _Fault(_Boom(without_lsa=True)) as f:
         for _ in range(
             2
         ):  # one call reaches two native sites: the quick path, then the general kernel path
             linear_sum_assignment(a)
         warnings = [m for m in f.log.messages if "falling back" in m]
         assert len(warnings) == len(set(warnings)) >= 1, "a call site must not be logged twice"
-        assert any("'lsa'" in m for m in warnings)
+        assert any("'solve_array'" in m for m in warnings)
         assert _native.native_status()["failures"] >= 2
 
 

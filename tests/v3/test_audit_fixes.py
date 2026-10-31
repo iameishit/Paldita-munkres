@@ -517,7 +517,7 @@ def test_quick_path_matches_scipy_and_defers_every_unusual_input():
                 r2, c2 = scipy_opt.linear_sum_assignment(a, maximize=maximize)
                 assert a[r, c].sum() == pytest.approx(a[r2, c2].sum())
                 assert (
-                    r.dtype == np.intp
+                    r.dtype == np.int64
                     and c.dtype == np.intp
                     and r.flags.writeable
                     and c.flags.writeable

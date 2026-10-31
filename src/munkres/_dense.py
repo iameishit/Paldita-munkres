@@ -137,11 +137,13 @@ def fast_lsa(cost: Any, maximize: bool = False) -> Any:  # noqa: PLR0911
         raise _explain(bad, left, right, swapped=transposed) from None
     if got is None:
         return None
+    if got is _native.FAILED:
+        return None
     r2c = got[0].astype(np.intp)
     if transposed:  # work rows are original columns
         order = np.argsort(r2c, kind="stable")
         return r2c[order], order.astype(np.intp)
-    return np.arange(n, dtype=np.intp), r2c
+    return np.arange(n, dtype=np.int64), r2c
 
 
 __all__ = ["UnsolvableMatrix", "fast_lsa"]
