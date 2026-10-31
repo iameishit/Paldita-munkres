@@ -29,9 +29,12 @@ class _Records(logging.Handler):
 class _Boom:
     """A kernel that answers the ABI question and then fails on every real call."""
 
-    def __init__(self, exc=RuntimeError("injected fault")):
+    def __init__(self, exc=RuntimeError("injected fault"), without_lsa=False):
         self.exc = exc
         self.calls = 0
+        self.lsa = None
+        if not without_lsa:
+            self.lsa = self._fail
 
     def abi_version(self):
         return _native._ABI
@@ -40,7 +43,7 @@ class _Boom:
         self.calls += 1
         raise self.exc
 
-    solve = solve_batch = lsa = _fail
+    solve = solve_batch = _fail
 
 
 class _Fault:
@@ -87,6 +90,12 @@ def test_results_are_identical_when_the_kernel_raises_on_every_call():
             assert b[k][np.arange(5), res.col_ind[k]].sum() == pytest.approx(
                 solve(b[k].tolist()).total
             )
+
+
+def test_without_lsa():
+    a = _matrix()
+    with _Fault(_Boom(without_lsa=True)):
+        linear_sum_assignment(a)
 
 
 def test_each_failing_call_site_is_logged_exactly_once_and_nothing_is_raised():
