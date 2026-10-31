@@ -278,7 +278,7 @@ def test_return_type_follows_the_input():
     np = pytest.importorskip("numpy")
     pd = pytest.importorskip("pandas")
     rows, cols = linear_sum_assignment(np.array([[4, 1], [2, 0]]))
-    assert isinstance(rows, np.ndarray) and rows.dtype == np.intp and cols.tolist() == [1, 0]
+    assert isinstance(rows, np.ndarray) and rows.dtype == np.int64 and cols.tolist() == [1, 0]
     assert isinstance(linear_sum_assignment(pd.DataFrame([[4, 1], [2, 0]]))[0], np.ndarray)
     assert linear_sum_assignment(((4, 1), (2, 0))) == ([0, 1], [1, 0])
     assert linear_sum_assignment([]) == ([], [])
